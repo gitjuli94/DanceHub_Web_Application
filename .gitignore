@@ -1,0 +1,6 @@
+.env
+__pycache__
+venv
+app copy.py
+.DS_Store
+static/.DS_Store
