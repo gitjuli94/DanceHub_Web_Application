@@ -1,4 +1,18 @@
 # DanceHub_Web_Application
+---current status:
+* user or admin can create an account
+* psql tables created for dance schools and dance events, but they don't yet function   properly on the web page
+* web page layout is the final form but needs improving (three main pages + registration page)
+* database name is dancehub
+  
+* install:
+    1) clone the repository
+    2) install the dependencies in the requirements file
+    3) run the application within a Flask environment
+
+
+-----
+
 A platform to search for dance classes, read reviews and discover social dance events. 
 
 The application displays dance schools in a specific area, where users can search for dance classes and social dance events based on a specific dance style (e.g. salsa, tango or rock). Clarification: dance class is a guided session with an instructor and social dancing events are informal gatherings where people freely dance with each other and mingle to meet new people. Both are organized in dance schools. In the application it's possible to check the schedules for these events and read their reviews. Each user is either a basic user or an administrator.
