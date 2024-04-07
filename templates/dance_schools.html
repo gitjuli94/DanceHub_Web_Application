@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dance Schools</title>
+<style>
+  body {
+    background-color: pink;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  h1 {
+    color: white;
+  }
+  table {
+    margin: 0 auto;
+    width: 50%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  th {
+    background-color: blue;
+    color: white;
+  }
+  tr:hover {
+    background-color: lightblue;
+  }
+  a {
+    color: blue;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 10px;
+  }
+  a:hover {
+    color: darkblue;
+  }
+</style>
+</head>
+<body>
+
+<h1>Dance Schools</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Dance Type</th>
+  </tr>
+  <!-- table contents -->
+</table>
+
+<a href="/add_dance_school">Add New School</a>
+<a href="/">Back to Home</a>
+
+</body>
+</html>
+
+<form action="/result" method="GET">
+Search: <input type="text" name="query">
+<br>
+<input type="submit" value="Go">
+</form>
