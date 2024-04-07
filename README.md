@@ -1,8 +1,9 @@
 # DanceHub_Web_Application
 ---current status:
 * user or admin can create an account
-* database created for dance schools and dance events, not yet functioning properly
-* web page layout is the final form but needs improving
+* psql tables created for dance schools and dance events, but they don't yet function   properly on the web page
+* web page layout is the final form but needs improving (three main pages + registration page)
+* database name is dancehub
   
 * install:
     1) clone the repository
