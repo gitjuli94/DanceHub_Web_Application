@@ -1,14 +1,15 @@
-from app import app
-from flask_sqlalchemy import SQLAlchemy
+"""
+initialize Flask application and connect to database
+"""
+
+#import required modules
 from os import getenv
+from flask_sqlalchemy import SQLAlchemy
+from app import app
 
 
-#määritä osoite jonka kautta tietokantaan saadaan yhteys
-#luo db olio
-#    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///juliarahkonen"
-#käytetään mielummin ympäristömuuttujaa:
 
-
+#connect to database:
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
-
-db = SQLAlchemy(app)#anna lista jossa rivit
+#create database object
+db = SQLAlchemy(app)#give list

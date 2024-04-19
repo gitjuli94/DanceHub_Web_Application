@@ -1,9 +1,18 @@
+"""
+functions for user authentication,
+including login, logout, registration, and CSRF token verification
+"""
+
+#import required modules
 import os
 from sqlalchemy import text
-from db import db
 from flask import abort, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
+from db import db
 
+
+
+#create functions for log in and register
 def login(name, password):
     sql = text("SELECT password, id, role FROM users WHERE name=:name")
     result = db.session.execute(sql, {"name":name})

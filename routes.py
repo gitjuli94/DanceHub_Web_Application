@@ -1,23 +1,30 @@
+"""
+Routes for a Flask web application
+handling user requests, data retrieval and manipulation,
+user authentication, and access control
+"""
+
+#import required modules
 from app import app
 from sqlalchemy.sql import text
 from flask import redirect, render_template, request, session
 import users
 from db import db
 
-
+"""main page"""
 @app.route("/")
 def index():
     return render_template("index.html")
 
-#viestien lähetys sivulle
+"""#send messages on page"""
 
 @app.route("/messages")
 def messages():
     result = db.session.execute(text("SELECT content FROM messages"))
     messages = result.fetchall()
-    return render_template("messages.html", count=len(messages), messages=messages) 
+    return render_template("messages.html", count=len(messages), messages=messages)
 
-#hakutoiminto:
+"""#search function:"""
 
 @app.route("/search")
 def form():
@@ -32,7 +39,7 @@ def result():
     return render_template("result.html", query=query, messages=messages)
 
 
-#muut:
+"""#others:"""
 
 """@app.route("/dance_schools")
 def page1():
@@ -42,7 +49,7 @@ def page1():
 def page2():
     return render_template("dance_events.html")"""
 
-#kirjautuminen:
+"""#log in:"""
 
 @app.route("/login", methods=["get", "post"])#login
 def login():
@@ -57,11 +64,13 @@ def login():
             return render_template("error.html", message="Väärä tunnus tai salasana")
         return redirect("/")
 
+"""#log out:"""
 @app.route("/logout")
 def logout():
     users.logout()
     return redirect("/")
 
+"""#register:"""
 @app.route("/register", methods=["get", "post"])
 def register():
     if request.method == "GET":
@@ -87,11 +96,11 @@ def register():
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
         return redirect("/")
 
-#lisää kouluja:
+"""#add schools:"""
 
 @app.route("/dance_schools")
 def dance_schools():
-    #ollaanko kirjauduttu admin oikeuksilla
+    #is the session logged in with admin rights:
     if session.get("user_role") == 2:
         return render_template("add_dance_school.html")
     else:
@@ -103,8 +112,8 @@ def add_dance_school():
         name = request.form["name"]
         rating = int(request.form["rating"])
         dance_type = request.form["dance_type"]
-        
-        #uusi koulu
+
+        #new school
         db.session.execute(
             "INSERT INTO schools (name, rating, dance_type) VALUES (:name, :rating, :dance_type)",
             {"name": name, "rating": rating, "dance_type": dance_type}
@@ -117,7 +126,7 @@ def add_dance_school():
 
 @app.route("/dance_events")
 def dance_events():
-    #ollaanko kirjauduttu admin oikeuksilla
+    #is the session logged in with admin rights:
     if session.get("user_role") == "2":
         return render_template("add_dance_event.html")
     else:
@@ -130,10 +139,11 @@ def add_dance_event():
         weekday = request.form["weekday"]
         description = request.form["description"]
         school_id = int(request.form["school_id"])
-        
-        #uusi eventti
-        db.session.execute(
-            "INSERT INTO events (name, weekday, description, school_id) VALUES (:name, :weekday, :description, :school_id)",
+
+        #new event
+        db.session.execute( #this modified into two lines because long
+            "INSERT INTO events (name, weekday, description, school_id) " \
+            "VALUES (:name, :weekday, :description, :school_id)",
             {"name": name, "weekday": weekday, "description": description, "school_id": school_id}
         )
         db.session.commit()

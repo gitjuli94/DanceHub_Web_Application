@@ -4,18 +4,27 @@ CREATE TABLE users (
     password TEXT,
     role INTEGER
 );
-CREATE TABLE reviews (
+CREATE TABLE styles (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users,
-    stars INTEGER,
-    comment TEXT
+    name TEXT
 );
 CREATE TABLE schools (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
+    city TEXT,
     description TEXT,
+    admin_id INTEGER REFERENCES users(id)
+);
+
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users,
+    school_id INTEGER REFERENCES schools(id),
     rating INTEGER CHECK (rating >= 1 AND rating <= 5),
-    dance_type TEXT,  --various dannce styles
+    comment TEXT,
+    sent_at TIMESTAMP,
+    sent_by INTEGER REFERENCES users(id),
+    visible BOOLEAN
 );
 CREATE TABLE events (
     id SERIAL PRIMARY KEY,
@@ -23,4 +32,20 @@ CREATE TABLE events (
     weekday TEXT NOT NULL,
     description TEXT,
     school_id INTEGER REFERENCES schools(id)
+);
+CREATE TABLE classes (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    weekday TEXT NOT NULL,
+    description TEXT,
+    school_id INTEGER REFERENCES schools(id),
+    style_id INTEGER REFERENCES styles(id)
+);
+
+
+CREATE TABLE style_groups (
+    id SERIAL PRIMARY KEY,
+    school_id INTEGER REFERENCES schools(id),
+    style_id INTEGER REFERENCES styles(id),
+    CONSTRAINT unique_pair UNIQUE (school_id, style_id)
 );
