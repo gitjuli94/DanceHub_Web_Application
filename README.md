@@ -1,5 +1,6 @@
 # DanceHub_Web_Application
----current status:
+-----
+**välipalautus 3**
 * user or admin can create an account
 * psql tables created for dance schools and dance events, but they don't yet function   properly on the web page
 * web page layout is the final form but needs improving (three main pages + registration page)
