@@ -42,13 +42,13 @@
 
 <h1>Add New Dance School</h1>
 
-<form action="/add_dance_school" method="POST">
+<form action="/send" method="POST">
   <label for="name">Name:</label><br>
-  <input type="text" id="name" name="name" required><br>
-  <label for="rating">Rating (1-5):</label><br>
-  <input type="number" id="rating" name="rating" min="1" max="5" required><br>
-  <label for="dance_type">Dance Type:</label><br>
-  <input type="text" id="dance_type" name="dance_type" required><br>
+  <input type="text" name="name" required><br>
+  <label for="city">City:</label><br>
+  <input type="text" name="city" required><br> 
+  <label for="description">Description:</label><br>
+  <input type="text" name="description" required><br>
   <input type="submit" value="Submit">
 </form>
 

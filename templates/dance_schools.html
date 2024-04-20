@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<a href="/">Back to main page</a>
 <title>Dance Schools</title>
 <style>
   body {
@@ -12,6 +13,9 @@
   }
   h1 {
     color: white;
+  }
+  form {
+    display: inline-block; /* Added to make the search field appear next to the title */
   }
   table {
     margin: 0 auto;
@@ -43,24 +47,29 @@
 <body>
 
 <h1>Dance Schools</h1>
+<form action="/result" method="GET">
+  Search: <input type="text" name="query">
+  <input type="submit" value="Go">
+</form>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Rating</th>
-    <th>Dance Type</th>
-  </tr>
-  <!-- table contents -->
-</table>
+<hr> <!-- add break -->
+Total number: {{ count }}
 
-<a href="/add_dance_school">Add New School</a>
-<a href="/">Back to Home</a>
+<hr>
+{% for message in messages %}
+<i>Name:</i> {{ message[0] }}
+<p>
+<i>Description:</I> {{ message[1] }}
+<p>
+<i>Rating:</i> {{ message[2] }}
+<p>
+<i>City:</I> {{ message[3] }}
+<hr>
+{% endfor %}
+
+{% if add_button %}
+    <a href="/add_dance_school">Add New School</a>
+{% endif %}
 
 </body>
 </html>
-
-<form action="/result" method="GET">
-Search: <input type="text" name="query">
-<br>
-<input type="submit" value="Go">
-</form>

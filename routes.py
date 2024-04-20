@@ -10,19 +10,13 @@ from sqlalchemy.sql import text
 from flask import redirect, render_template, request, session
 import users
 from db import db
+import db_operations
 
 """main page"""
 @app.route("/")
 def index():
     return render_template("index.html")
 
-"""#send messages on page"""
-
-@app.route("/messages")
-def messages():
-    result = db.session.execute(text("SELECT content FROM messages"))
-    messages = result.fetchall()
-    return render_template("messages.html", count=len(messages), messages=messages)
 
 """#search function:"""
 
@@ -34,8 +28,8 @@ def form():
 def result():
     query = request.args["query"]
     sql = text("SELECT id, content FROM schools WHERE description LIKE :query")
-    result = db.session.execute(sql, {"query":"%"+query+"%"})
-    messages = result.fetchall()
+    result_set = db.session.execute(sql, {"query":"%"+query+"%"})
+    messages = result_set.fetchall()
     return render_template("result.html", query=query, messages=messages)
 
 
@@ -96,35 +90,51 @@ def register():
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
         return redirect("/")
 
-"""#add schools:"""
+"""main page for dance schools"""
 
 @app.route("/dance_schools")
 def dance_schools():
+    list = db_operations.get_school_list()
     #is the session logged in with admin rights:
     if session.get("user_role") == 2:
-        return render_template("add_dance_school.html")
-    else:
-        return render_template("dance_schools.html")
+        return render_template("dance_schools.html", add_button=True, count=len(list), messages=list)
+    return render_template("dance_schools.html", add_button=False, count=len(list), messages=list)
 
-@app.route("/add_dance_school", methods=["POST"])
-def add_dance_school():
-    if session.get("user_role") == 2:
+"""@app.route("/add_review")
+def reviews():
         name = request.form["name"]
         rating = int(request.form["rating"])
-        dance_type = request.form["dance_type"]
+        comment = request.form["comment"]
 
         #new school
         db.session.execute(
-            "INSERT INTO schools (name, rating, dance_type) VALUES (:name, :rating, :dance_type)",
-            {"name": name, "rating": rating, "dance_type": dance_type}
+            "INSERT INTO reviews (name, rating, comment) VALUES (:name, :rating, :comment)",
+            {"name": name, "rating": rating, "comment": comment}
         )
         db.session.commit()
 
-        return redirect("/dance_schools")
-    else:
-        return redirect("/")
+        return redirect("/dance_schools")"""
 
-@app.route("/dance_events")
+@app.route("/add_dance_school")
+def add_dance_school():
+    if session.get("user_role") == 2:
+        return render_template("add_dance_school.html")
+    else:
+        return render_template("error.html", message="Not allowed")
+
+@app.route("/send", methods=["POST"])
+def send():
+    name = request.form["name"]
+    city = request.form["city"]
+    description = request.form["description"]
+    #new school
+    if db_operations.add_school(name, city, description):
+        #return redirect("/dance_schools")
+        return redirect("/")
+    else:
+        return render_template("error.html", message="Viestin lähetys ei onnistunut")
+
+"""@app.route("/dance_events")
 def dance_events():
     #is the session logged in with admin rights:
     if session.get("user_role") == "2":
@@ -150,4 +160,4 @@ def add_dance_event():
 
         return redirect("/dance_events")
     else:
-        return redirect("/")
+        return redirect("/")"""
