@@ -2,6 +2,7 @@
 -----
 **välipalautus 3 status**
 * user or admin can create an account
+* user or admin can sign in
 * admin user can create new schools
 * all users can create reviews
 * all visitors can see the schools and reviews
