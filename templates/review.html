@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}DanceHub{% endblock %}
+
+{% block content %}
+<form action="/send_review/{{ id }}", method="POST" onsubmit="return check(this)">
+    <p>
+        School: {{ name }}
+    </p>
+    <p>
+        Rating:
+        <select name="rating" required>
+            <option value="" selected disabled hidden>Select Rating</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </p>
+    <p>
+        Write your review: <br>
+        <textarea name="comment"></textarea>
+    </p>
+    <input type="submit" value="Submit Review">
+</form>
+<a href="/">Go Back</a>
+
+<script>
+    function check(form) {
+        if (form.rating.value === "") {
+            alert("Please select a rating");
+            return false;
+        }
+        if (form.content.value.length > 5000) {
+            alert("The review you entered is too long");
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock %}

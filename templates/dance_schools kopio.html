@@ -57,13 +57,13 @@ Total number: {{ count }}
 
 <hr>
 {% for message in messages %}
-<a href="/school/{{ message[0] }}"><i>Name:</i> {{ message[1] }}</a>
+<i>Name:</i> {{ message[0] }}
 <p>
-<i>Description:</I> {{ message[2] }}
+<i>Description:</I> {{ message[1] }}
 <p>
-<i>Rating:</i> {{ message[3] }}
+<i>Rating:</i> {{ message[2] }}
 <p>
-<i>City:</I> {{ message[4] }}
+<i>City:</I> {{ message[3] }}
 <hr>
 {% endfor %}
 

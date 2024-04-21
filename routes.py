@@ -33,16 +33,6 @@ def result():
     return render_template("result.html", query=query, messages=messages)
 
 
-"""#others:"""
-
-"""@app.route("/dance_schools")
-def page1():
-    return render_template("dance_schools.html")
-
-@app.route("/dance_events")
-def page2():
-    return render_template("dance_events.html")"""
-
 """#log in:"""
 
 @app.route("/login", methods=["get", "post"])#login
@@ -100,20 +90,6 @@ def dance_schools():
         return render_template("dance_schools.html", add_button=True, count=len(list), messages=list)
     return render_template("dance_schools.html", add_button=False, count=len(list), messages=list)
 
-"""@app.route("/add_review")
-def reviews():
-        name = request.form["name"]
-        rating = int(request.form["rating"])
-        comment = request.form["comment"]
-
-        #new school
-        db.session.execute(
-            "INSERT INTO reviews (name, rating, comment) VALUES (:name, :rating, :comment)",
-            {"name": name, "rating": rating, "comment": comment}
-        )
-        db.session.commit()
-
-        return redirect("/dance_schools")"""
 
 @app.route("/add_dance_school")
 def add_dance_school():
@@ -122,7 +98,7 @@ def add_dance_school():
     else:
         return render_template("error.html", message="Not allowed")
 
-@app.route("/send", methods=["POST"])
+@app.route("/send_school", methods=["POST"])
 def send():
     name = request.form["name"]
     city = request.form["city"]
@@ -132,7 +108,38 @@ def send():
         #return redirect("/dance_schools")
         return redirect("/")
     else:
-        return render_template("error.html", message="Viestin lähetys ei onnistunut")
+        return render_template("error.html", message="unsuccessful")
+
+
+
+"""show school"""
+@app.route("/school/<int:id>")
+def school(id):
+    school = db_operations.view_school(id)
+    name = school[0]
+    location = school[1]
+    description = school[2]
+    reviews = school[3]
+    return render_template("view_school.html", id=id, name=name, location=location, description=description, reviews=reviews)
+
+"""add review"""
+@app.route("/<int:id>/add_review")
+def review(id):
+    if "user_name" in session:
+        name = db_operations.fetch_school_name(id)
+        return render_template("review.html", id=id, name=name)
+    return render_template("error.html", message="You need to be logged in to add a review")
+
+
+@app.route("/send_review/<int:id>", methods=["POST"])
+def send_review(id):
+    rating = int(request.form["rating"])
+    comment = request.form["comment"]
+    if db_operations.add_review(id, rating, comment):
+        return redirect(f"/school/{id}")
+    else:
+        return render_template("error.html", message="unsuccessful")
+
 
 """@app.route("/dance_events")
 def dance_events():
