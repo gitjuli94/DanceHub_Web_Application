@@ -43,3 +43,18 @@ def add_review(id, rating, comment):
     db.session.commit()
     return True
 
+"""dance styles, provided automatically in the database"""
+def add_styles():
+    styles = ['Ballet', 'Hip Hop', 'Jazz', 'Contemporary', 'Tap', 'Ballroom', 'Salsa', 'Bachata', 'Swing', 'Tango', 'Latin']
+    for style in styles:
+        sql = text("INSERT INTO styles (name) VALUES (:style)")
+        db.session.execute(sql, {'style': style})
+    db.session.commit()
+    return True
+
+#not finished, search function:
+def fetch(query):
+    #add that also results by school name are found
+    sql = "SELECT description FROM schools WHERE lower(description) LIKE lower(:query)"
+    result = db.session.execute(text(sql), {"query":"%"+query+"%"})
+    return result.fetchall()

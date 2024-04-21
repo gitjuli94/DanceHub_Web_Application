@@ -20,16 +20,10 @@ def index():
 
 """search function, not finished:"""
 
-@app.route("/search")
-def form():
-    return render_template("form.html")
-
 @app.route("/result")
 def result():
     query = request.args["query"]
-    sql = text("SELECT id, content FROM schools WHERE description LIKE :query")
-    result_set = db.session.execute(sql, {"query":"%"+query+"%"})
-    messages = result_set.fetchall()
+    messages = db_operations.fetch(query)
     return render_template("result.html", query=query, messages=messages)
 
 
