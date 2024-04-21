@@ -18,7 +18,7 @@ def index():
     return render_template("index.html")
 
 
-"""#search function:"""
+"""search function, not finished:"""
 
 @app.route("/search")
 def form():
@@ -33,7 +33,7 @@ def result():
     return render_template("result.html", query=query, messages=messages)
 
 
-"""#log in:"""
+"""log in:"""
 
 @app.route("/login", methods=["get", "post"])#login
 def login():
@@ -48,13 +48,13 @@ def login():
             return render_template("error.html", message="Väärä tunnus tai salasana")
         return redirect("/")
 
-"""#log out:"""
+"""log out:"""
 @app.route("/logout")
 def logout():
     users.logout()
     return redirect("/")
 
-"""#register:"""
+"""register:"""
 @app.route("/register", methods=["get", "post"])
 def register():
     if request.method == "GET":
@@ -90,6 +90,7 @@ def dance_schools():
         return render_template("dance_schools.html", add_button=True, count=len(list), messages=list)
     return render_template("dance_schools.html", add_button=False, count=len(list), messages=list)
 
+"""add dance schools"""
 
 @app.route("/add_dance_school")
 def add_dance_school():
@@ -109,7 +110,6 @@ def send():
         return redirect("/")
     else:
         return render_template("error.html", message="unsuccessful")
-
 
 
 """show school"""
@@ -141,30 +141,32 @@ def send_review(id):
         return render_template("error.html", message="unsuccessful")
 
 
-"""@app.route("/dance_events")
-def dance_events():
+"""main page for dance schedules, sorted by city"""
+"""
+@app.route("/schedules")
+def schedules():
+    list = db_operations.get_schedules()
     #is the session logged in with admin rights:
-    if session.get("user_role") == "2":
-        return render_template("add_dance_event.html")
+    if session.get("user_role") == 2:
+        return render_template("dance_schools.html", add_button=True, count=len(list), messages=list)
+    return render_template("dance_schools.html", add_button=False, count=len(list), messages=list)
+
+#add schedules#
+
+@app.route("/add_schedules")
+def add_dance_school():
+    if session.get("user_role") == 2:
+        return render_template("add_dance_school.html")
     else:
-        return render_template("dance_events.html")
+        return render_template("error.html", message="Not allowed")
 
-@app.route("/add_dance_event", methods=["POST"])
-def add_dance_event():
-    if session.get("user_role") == "2":
-        name = request.form["name"]
-        weekday = request.form["weekday"]
-        description = request.form["description"]
-        school_id = int(request.form["school_id"])
-
-        #new event
-        db.session.execute( #this modified into two lines because long
-            "INSERT INTO events (name, weekday, description, school_id) " \
-            "VALUES (:name, :weekday, :description, :school_id)",
-            {"name": name, "weekday": weekday, "description": description, "school_id": school_id}
-        )
-        db.session.commit()
-
-        return redirect("/dance_events")
+@app.route("/send_schedule", methods=["POST"])
+def send():
+    name = request.form["name"]
+    city = request.form["city"]
+    description = request.form["description"]
+    #new schedule
+    if db_operations.add_school(name, city, description):
+        return redirect("/")
     else:
-        return redirect("/")"""
+        return render_template("error.html", message="unsuccessful")"""

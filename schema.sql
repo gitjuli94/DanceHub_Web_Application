@@ -26,13 +26,7 @@ CREATE TABLE reviews (
     sent_by INTEGER REFERENCES users(id),
     visible BOOLEAN
 );
-CREATE TABLE events (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    weekday TEXT NOT NULL,
-    description TEXT,
-    school_id INTEGER REFERENCES schools(id)
-);
+
 CREATE TABLE classes (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,

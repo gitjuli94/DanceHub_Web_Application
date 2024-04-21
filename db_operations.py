@@ -5,9 +5,6 @@ from db import db
 def add_school(name, city, description):
     sql = "INSERT INTO schools (name, city, description) VALUES (:name, :city, :description)"
     db.session.execute(text(sql), {"name": name, "city": city, "description": description})
-    #"INSERT INTO schools (name, city, description) VALUES (:name, :city, :description)",
-    #{"name": name, "city": city, "description": description}
-    #))
     db.session.commit()
     return True
 

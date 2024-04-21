@@ -11,5 +11,6 @@ from app import app
 
 #connect to database:
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+app.secret_key = getenv("SECRET_KEY")
 #create database object
 db = SQLAlchemy(app)#give list

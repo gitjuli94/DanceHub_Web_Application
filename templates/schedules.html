@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <a href="/">Back to main page</a>
-<title>Dance Schools</title>
+<title>Schedules</title>
 <style>
   body {
     background-color: pink;
@@ -48,28 +48,8 @@
 
 <h1>Dance Schools</h1>
 <form action="/result" method="GET">
-  Search: <input type="text" name="query">
+  City: <input type="text" name="query">
   <input type="submit" value="Go">
 </form>
 
-<hr> <!-- add break -->
-Total number: {{ count }}
 
-<hr>
-{% for message in messages %}
-<i>Name:</i> {{ message[0] }}
-<p>
-<i>Description:</I> {{ message[1] }}
-<p>
-<i>Rating:</i> {{ message[2] }}
-<p>
-<i>City:</I> {{ message[3] }}
-<hr>
-{% endfor %}
-
-{% if add_button %}
-    <a href="/add_dance_school">Add New School</a>
-{% endif %}
-
-</body>
-</html>
