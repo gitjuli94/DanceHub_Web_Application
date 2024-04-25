@@ -1,46 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome to Dance Hub</title>
-<style>
-  body {
-    background-color: pink;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  h1 {
-    color: white;
-  }
-  a {
-    color: blue;
-    text-decoration: none;
-    font-size: 18px;
-    margin: 10px;
-  }
-  a:hover {
-    color: darkblue;
-  }
-</style>
-</head>
-<body>
+{% extends "layout.html" %}
 
-<h1>Welcome to Dance Hub</h1>
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
 
-<p>Explore our website:</p>
-<a href="/">Home</a>
-<a href="/dance_schools">Dance Schools</a>
-<a href="/schedules">Schedules</a>
-
-</body>
-</html>
+{% block content %}
 
 {% if session.user_name %}
 <p>You're logged in as {{ session.user_name }}</p>
 <a href="/logout">Log out</a>
 {% else %}
-<form action="/login" method="POST">
+<form action="/" method="POST">
 <p>Username:<br>
 <input type="text" name="username"></p>
 <p>Password:<br>
@@ -49,3 +19,4 @@
 </form>
 <p>If you don't have an account, you can create a new one <a href="/register">here</a></p>
 {% endif %}
+{% endblock %}

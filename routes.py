@@ -12,82 +12,91 @@ import users
 from db import db
 import db_operations
 
-"""main page"""
-@app.route("/")
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
-
-
-"""search function, not finished:"""
-
-@app.route("/result")
-def result():
-    query = request.args["query"]
-    messages = db_operations.fetch(query)
-    return render_template("result.html", query=query, messages=messages)
-
-
-"""log in:"""
-
-@app.route("/login", methods=["get", "post"])#login
-def login():
+    """
+    main page, includes login function
+    """
     if request.method == "GET":
-        return render_template("login.html")#login
+        return render_template("index.html")#login form
 
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
         if not users.login(username, password):
-            return render_template("error.html", message="Väärä tunnus tai salasana")
+            return render_template("error.html", message="Incorrect username or password")
         return redirect("/")
 
-"""log out:"""
+
+@app.route("/result")
+def result():
+    """
+    search function, not finished
+    """
+    query = request.args["query"]
+    messages = db_operations.fetch(query)
+    return render_template("result.html", query=query, messages=messages)
+
+
+
 @app.route("/logout")
 def logout():
+    """
+    logout
+    """
     users.logout()
     return redirect("/")
 
-"""register:"""
+
 @app.route("/register", methods=["get", "post"])
 def register():
+    """
+    register
+    """
     if request.method == "GET":
         return render_template("register.html")
 
     if request.method == "POST":
         username = request.form["username"]
         if len(username) < 1 or len(username) > 20:
-            return render_template("error.html", message="Tunnuksessa tulee olla 1-20 merkkiä")
+            return render_template("error.html", message="Username needs to be between 1 and 20 characters long")
 
         password1 = request.form["password1"]
         password2 = request.form["password2"]
         if password1 != password2:
-            return render_template("error.html", message="Salasanat eroavat")
+            return render_template("error.html", message="Passwords don't match")
         if password1 == "":
-            return render_template("error.html", message="Salasana on tyhjä")
+            return render_template("error.html", message="Password is empty")
 
         role = int(request.form["role"])
         if role not in (1,2):
-            return render_template("error.html", message="Tuntematon käyttäjärooli")
+            return render_template("error.html", message="Unknown user role")
 
         if not users.register(username, password1, role):
-            return render_template("error.html", message="Rekisteröinti ei onnistunut")
+            return render_template("error.html", message="Unsuccessful registration")
         return redirect("/")
 
-"""main page for dance schools"""
 
 @app.route("/dance_schools")
 def dance_schools():
+    """
+    listing page for dance schools
+    """
     list = db_operations.get_school_list()
     #is the session logged in with admin rights:
     if session.get("user_role") == 2:
         return render_template("dance_schools.html", add_button=True, count=len(list), messages=list)
     return render_template("dance_schools.html", add_button=False, count=len(list), messages=list)
 
-"""add dance schools"""
+
 
 @app.route("/add_dance_school")
 def add_dance_school():
+    """
+    add dance schools
+    """
     if session.get("user_role") == 2:
         return render_template("add_dance_school.html")
     else:
@@ -100,15 +109,17 @@ def send():
     description = request.form["description"]
     #new school
     if db_operations.add_school(name, city, description):
-        #return redirect("/dance_schools")
-        return redirect("/")
+        return redirect("/dance_schools")
     else:
         return render_template("error.html", message="unsuccessful")
 
 
-"""show school"""
+
 @app.route("/school/<int:id>")
 def school(id):
+    """
+    show one school
+    """
     school = db_operations.view_school(id)
     name = school[0]
     location = school[1]
@@ -116,9 +127,12 @@ def school(id):
     reviews = school[3]
     return render_template("view_school.html", id=id, name=name, location=location, description=description, reviews=reviews)
 
-"""add review"""
+
 @app.route("/<int:id>/add_review")
 def review(id):
+    """
+    add review
+    """
     if "user_name" in session:
         name = db_operations.fetch_school_name(id)
         return render_template("review.html", id=id, name=name)
@@ -129,6 +143,12 @@ def review(id):
 def send_review(id):
     rating = int(request.form["rating"])
     comment = request.form["comment"]
+
+    if not rating:
+        return render_template("error.html", message="Please select a rating")
+    if len(comment) > 5000:
+        return render_template("error.html", message="The review you entered is too long")
+    rating = int(rating)
     if db_operations.add_review(id, rating, comment):
         return redirect(f"/school/{id}")
     else:

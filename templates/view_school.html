@@ -1,38 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<a href="/">Back to main page</a>
-<title>{{ name }} - Dance School</title>
-<style>
-  body {
-    background-color: pink;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  h1 {
-    color: white;
-  }
-  p {
-    text-align: left; /* Align text to the left */
-  }
-  a {
-    color: blue;
-    text-decoration: none;
-    font-size: 18px;
-    margin: 10px;
-  }
-  a:hover {
-    color: darkblue;
-  }
-</style>
-</head>
-<body>
+{% extends "layout.html" %}
 
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
+
+{% block content %}
+<hr>
+<body>
 <h1>{{ name }}</h1>
 <p><strong>Location:</strong> {{ location }}</p>
 <p><strong>Description:</strong> {{ description }}</p>
+<a href="/{{ id }}/add_review">Add Review</a>
 <hr>
 
 <h2>Reviews</h2>
@@ -46,7 +24,5 @@
   <p>No reviews available for this school yet.</p>
 {% endif %}
 
-<a href="/{{ id }}/add_review">Add Review</a>
-
 </body>
-</html>
+{% endblock %}

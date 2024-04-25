@@ -1,63 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<a href="/">Back to main page</a>
-<title>Dance Schools</title>
-<style>
-  body {
-    background-color: pink;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  h1 {
-    color: white;
-  }
-  form {
-    display: inline-block; /* Added to make the search field appear next to the title */
-  }
-  table {
-    margin: 0 auto;
-    width: 50%;
-    border-collapse: collapse;
-  }
-  th, td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  }
-  th {
-    background-color: blue;
-    color: white;
-  }
-  tr:hover {
-    background-color: lightblue;
-  }
-  a {
-    color: blue;
-    text-decoration: none;
-    font-size: 18px;
-    margin: 10px;
-  }
-  a:hover {
-    color: darkblue;
-  }
-</style>
+{% extends "layout.html" %}
+
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
+
+{% block content %}
 </head>
 <body>
 
-<h1>Dance Schools</h1>
+<h2>Dance Schools</h2>
+
 <form action="/result" method="GET">
+
   Search: <input type="text" name="query">
   <input type="submit" value="Go">
+
 </form>
 
 <hr> <!-- add break -->
 Total number: {{ count }}
+{% if add_button %}
+    <a href="/add_dance_school">Add New School</a>
+{% endif %}
 
 <hr>
 {% for message in messages %}
-<a href="/school/{{ message[0] }}"><i>Name:</i> {{ message[1] }}</a>
+<a href="/school/{{ message[0] }}"> {{ message[1] }}</a>
 <p>
 <i>Description:</I> {{ message[2] }}
 <p>
@@ -67,9 +35,5 @@ Total number: {{ count }}
 <hr>
 {% endfor %}
 
-{% if add_button %}
-    <a href="/add_dance_school">Add New School</a>
-{% endif %}
-
 </body>
-</html>
+{% endblock %}

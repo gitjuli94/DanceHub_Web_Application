@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results</title>
-    <style>
-        /* Add CSS styles here */
-    </style>
-</head>
+{% extends "layout.html" %}
+
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
+
+{% block content %}
 <body>
-    <h1>Search Results</h1>
+    <h2>Search Results</h2>
     <p>Schools containing "{{ query }}":</p>
     <ul>
         {% for message in messages %}
@@ -17,4 +14,4 @@
         {% endfor %}
     </ul>
 </body>
-</html>
+{% endblock %}

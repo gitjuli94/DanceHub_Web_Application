@@ -1,7 +1,22 @@
 <!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" href="/static/main.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DanceHub</title>
-<h1> DanceHub </h1>
-<hr>
-{% block content %}{% endblock %}
+</head>
+<body>
+
+<h1>Welcome to Dance Hub</h1>
+
+<p>Explore our website:</p>
+<a href="/">Home</a>
+<a href="/dance_schools">Dance Schools</a>
+<a href="/schedules">Schedules</a>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

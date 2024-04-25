@@ -1,8 +1,14 @@
 {% extends "layout.html" %}
-{% block title %}DanceHub{% endblock %}
+
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
 
 {% block content %}
-<form action="/send_review/{{ id }}", method="POST" onsubmit="return check(this)">
+
+<h2>Review</h2>
+
+<form action="/send_review/{{ id }}", method="POST" enctype="multipart/form-data">
     <p>
         School: {{ name }}
     </p>
@@ -19,23 +25,9 @@
     </p>
     <p>
         Write your review: <br>
-        <textarea name="comment"></textarea>
+        <textarea name="comment" rows="6" cols="50"></textarea>
     </p>
     <input type="submit" value="Submit Review">
 </form>
-<a href="/">Go Back</a>
 
-<script>
-    function check(form) {
-        if (form.rating.value === "") {
-            alert("Please select a rating");
-            return false;
-        }
-        if (form.content.value.length > 5000) {
-            alert("The review you entered is too long");
-            return false;
-        }
-        return true;
-    }
-</script>
 {% endblock %}

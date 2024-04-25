@@ -1,5 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
+
+{% block content %}
+
 <form action="/result" method="GET">
-Hakusana: <input type="text" name="query">
+Keyword: <input type="text" name="query">
 <br>
-<input type="submit" value="Lähetä">
+<input type="submit" value="Search">
 </form>
+
+{% endblock %}

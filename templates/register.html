@@ -1,10 +1,15 @@
 {% extends "layout.html" %}
+
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
+
 {% block content %}
 
 <h2>Register</h2>
 
 <form action="/register" method="post">
-Tunnus: <br><input type="text" name="username" minlength="1" maxlength="20">
+Account: <br><input type="text" name="username" minlength="1" maxlength="20">
 <p>
 Password: <br><input type="password" name="password1">
 <p>
@@ -18,8 +23,6 @@ Role:
 <p>
 <input type="submit" value="Sign Up">
 </form>
-
 <p>
-<a href="/">Back to home</a>
 
 {% endblock %}
