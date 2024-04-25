@@ -13,7 +13,8 @@ CREATE TABLE schools (
     name TEXT NOT NULL,
     city TEXT,
     description TEXT,
-    admin_id INTEGER REFERENCES users(id)
+    admin_id INTEGER REFERENCES users(id),
+    visible boolean
 );
 
 CREATE TABLE reviews (
@@ -24,7 +25,7 @@ CREATE TABLE reviews (
     comment TEXT,
     sent_at TIMESTAMP,
     sent_by INTEGER REFERENCES users(id),
-    visible BOOLEAN
+    visible BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE classes (

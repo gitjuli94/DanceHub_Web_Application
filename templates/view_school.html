@@ -14,10 +14,21 @@ Welcome to Dance Hub
 <hr>
 
 <h2>Reviews</h2>
+<hr>
 {% if reviews %}
   {% for review in reviews %}
-    <p><strong>Rating:</strong> {{ review.rating }}</p>
-    <p><strong>Comment:</strong> {{ review.comment }}</p>
+    {% if review.visible %}
+      <p><strong>Rating:</strong> {{ review.rating }}</p>
+      <p><strong>Comment:</strong> {{ review.comment }}</p>
+        <div class="boolean_buttons">
+          {% if add_button %}
+            <form action="/delete_review/{{ review.id }}" method="POST">
+              <input type="hidden" name="_method" value="POST">
+              <button type="submit">Delete review</button>
+            </form>
+          {% endif %}
+        </div>
+    {% endif %}
     <hr>
   {% endfor %}
 {% else %}

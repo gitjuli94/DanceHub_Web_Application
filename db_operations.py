@@ -3,16 +3,22 @@ from werkzeug.security import generate_password_hash
 from db import db
 
 def add_school(name, city, description):
-    sql = "INSERT INTO schools (name, city, description) VALUES (:name, :city, :description)"
-    db.session.execute(text(sql), {"name": name, "city": city, "description": description})
+    sql = "INSERT INTO schools (name, city, description, visible) VALUES (:name, :city, :description, :visible)"
+    db.session.execute(text(sql), {"name": name, "city": city, "description": description, "visible": True})
     db.session.commit()
     return True
 
+def delete_school(id):
+    sql = "UPDATE schools SET visible=FALSE WHERE schools.id=:id"
+    db.session.execute(text(sql), {"id":id})
+    db.session.commit()
+
 def get_school_list():
     sql = "SELECT s.id, s.name, s.description, " \
-          "COALESCE(CAST(ROUND(AVG(CASE WHEN r.rating IS NULL THEN NULL ELSE r.rating END), 1) AS TEXT), '-') AS avg_rating, " \
+          "COALESCE(CAST(ROUND(AVG(CASE WHEN r.visible = TRUE THEN r.rating ELSE NULL END), 1) AS TEXT), '-') AS avg_rating, " \
           "s.city FROM schools s " \
           "LEFT JOIN reviews r ON s.id = r.school_id " \
+          "WHERE s.visible = TRUE " \
           "GROUP BY s.id, s.name, s.description, s.city " \
           "ORDER BY avg_rating DESC;"
     result = db.session.execute(text(sql))
@@ -38,12 +44,17 @@ def view_school(id):
     return [name, location, description, reviews, id]
 
 def add_review(id, rating, comment):
-    sql = "INSERT INTO reviews (school_id, rating, comment) VALUES (:school_id, :rating, :comment)"
-    db.session.execute(text(sql), {"school_id":id, "rating": rating, "comment": comment})
+    sql = "INSERT INTO reviews (school_id, rating, comment, visible) VALUES (:school_id, :rating, :comment, :visible)"
+    db.session.execute(text(sql), {"school_id":id, "rating": rating, "comment": comment, "visible": True})
     db.session.commit()
     return True
 
-"""dance styles, provided automatically in the database"""
+def delete_review(id):
+    sql = "UPDATE reviews SET visible=FALSE WHERE reviews.id=:id"
+    db.session.execute(text(sql), {"id":id})
+    db.session.commit()
+
+"""dance styles, provided automatically in the database?"""
 def add_styles():
     styles = ['Ballet', 'Hip Hop', 'Jazz', 'Contemporary', 'Tap', 'Ballroom', 'Salsa', 'Bachata', 'Swing', 'Tango', 'Latin']
     for style in styles:
@@ -52,8 +63,9 @@ def add_styles():
     db.session.commit()
     return True
 
-#not finished, search function:
+
 def fetch(query):
+    """not finished, search function:"""
     #add that also results by school name are found
     sql = "SELECT description FROM schools WHERE lower(description) LIKE lower(:query)"
     result = db.session.execute(text(sql), {"query":"%"+query+"%"})

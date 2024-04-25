@@ -87,8 +87,8 @@ def dance_schools():
     list = db_operations.get_school_list()
     #is the session logged in with admin rights:
     if session.get("user_role") == 2:
-        return render_template("dance_schools.html", add_button=True, count=len(list), messages=list)
-    return render_template("dance_schools.html", add_button=False, count=len(list), messages=list)
+        return render_template("dance_schools.html", add_button=True, count=len(list), messages=list, delete_button=True)
+    return render_template("dance_schools.html", add_button=False, count=len(list), messages=list, delete_button=False)
 
 
 
@@ -113,7 +113,10 @@ def send():
     else:
         return render_template("error.html", message="unsuccessful")
 
-
+@app.route("/delete_school/<int:id>", methods=["POST"])
+def delete_school(id):
+    db_operations.delete_school(id)
+    return redirect("/dance_schools")
 
 @app.route("/school/<int:id>")
 def school(id):
@@ -125,8 +128,11 @@ def school(id):
     location = school[1]
     description = school[2]
     reviews = school[3]
-    return render_template("view_school.html", id=id, name=name, location=location, description=description, reviews=reviews)
-
+    if session.get("user_role") == 2:
+        return render_template("view_school.html", id=id, name=name, location=location, description=description, \
+                           reviews=reviews, add_button=True)
+    return render_template("view_school.html", id=id, name=name, location=location, description=description, \
+                           reviews=reviews, add_button=False)
 
 @app.route("/<int:id>/add_review")
 def review(id):
@@ -153,6 +159,11 @@ def send_review(id):
         return redirect(f"/school/{id}")
     else:
         return render_template("error.html", message="unsuccessful")
+
+@app.route("/delete_review/<int:id>", methods=["POST"])
+def delete_review(id):
+    db_operations.delete_review(id)
+    return redirect("/dance_schools")
 
 
 """main page for dance schedules, sorted by city"""

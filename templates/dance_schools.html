@@ -19,20 +19,32 @@ Welcome to Dance Hub
 
 <hr> <!-- add break -->
 Total number: {{ count }}
+
 {% if add_button %}
     <a href="/add_dance_school">Add New School</a>
 {% endif %}
 
 <hr>
+
 {% for message in messages %}
-<a href="/school/{{ message[0] }}"> {{ message[1] }}</a>
-<p>
-<i>Description:</I> {{ message[2] }}
-<p>
-<i>Rating:</i> {{ message[3] }}
-<p>
-<i>City:</I> {{ message[4] }}
-<hr>
+  <a href="/school/{{ message[0] }}"> {{ message[1] }}</a>
+  <p>
+  <i>Description:</I> {{ message[2] }}
+  <p>
+  <i>Rating:</i> {{ message[3] }}
+  <p>
+  <i>City:</I> {{ message[4] }}
+  <div class="boolean_buttons">  
+    {% if delete_button %}
+      <form action="/delete_school/{{ message[0] }}" method="POST">
+        <input type="hidden" name="_method" value="POST">
+        <button type="submit">Delete school</button>
+      </form>
+  
+    {% endif %}
+  </div>
+  <hr>
+  
 {% endfor %}
 
 </body>
