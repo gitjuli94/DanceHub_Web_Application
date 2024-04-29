@@ -65,8 +65,12 @@ def add_styles():
 
 
 def fetch(query):
-    """not finished, search function:"""
-    #add that also results by school name are found
-    sql = "SELECT description FROM schools WHERE lower(description) LIKE lower(:query)"
+    sql = """
+    SELECT id, name, description, city FROM schools
+    WHERE (lower(name) LIKE lower(:query)
+    OR lower(city) LIKE lower(:query)
+    OR lower(description) LIKE lower(:query))
+    AND visible = TRUE;
+    """
     result = db.session.execute(text(sql), {"query":"%"+query+"%"})
     return result.fetchall()

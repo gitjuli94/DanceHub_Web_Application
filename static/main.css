@@ -18,3 +18,14 @@ a:hover {
 .boolean_buttons {
   margin: 20px; 
 }
+ul.queries {
+  text-align: center;
+  padding-left: 0;
+  list-style-type: circle;
+}
+.school-details {
+    background-color: rgb(255, 228, 225);
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 50%; 
+}

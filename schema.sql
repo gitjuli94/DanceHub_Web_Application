@@ -14,7 +14,8 @@ CREATE TABLE schools (
     city TEXT,
     description TEXT,
     admin_id INTEGER REFERENCES users(id),
-    visible boolean
+    visible boolean,
+    url TEXT
 );
 
 CREATE TABLE reviews (
@@ -25,18 +26,8 @@ CREATE TABLE reviews (
     comment TEXT,
     sent_at TIMESTAMP,
     sent_by INTEGER REFERENCES users(id),
-    visible BOOLEAN DEFAULT TRUE
+    visible BOOLEAN
 );
-
-CREATE TABLE classes (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    weekday TEXT NOT NULL,
-    description TEXT,
-    school_id INTEGER REFERENCES schools(id),
-    style_id INTEGER REFERENCES styles(id)
-);
-
 
 CREATE TABLE style_groups (
     id SERIAL PRIMARY KEY,

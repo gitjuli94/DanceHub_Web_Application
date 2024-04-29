@@ -30,10 +30,10 @@ def index():
         return redirect("/")
 
 
-@app.route("/result")
+@app.route("/result", methods=["GET"])
 def result():
     """
-    search function, not finished
+    search function, searches all results in school listing, including city, description and name
     """
     query = request.args["query"]
     messages = db_operations.fetch(query)

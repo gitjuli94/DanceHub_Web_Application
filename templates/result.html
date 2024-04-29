@@ -8,10 +8,21 @@ Welcome to Dance Hub
 <body>
     <h2>Search Results</h2>
     <p>Schools containing "{{ query }}":</p>
-    <ul>
+    <hr>
+    {% if messages %}
+      <ul class="queries">
         {% for message in messages %}
-        <li>{{ message.content }}</li>
-        {% endfor %}
-    </ul>
+          <a href="/school/{{ message[0] }}">{{ message[1] }}</a>
+	  <p>
+	  <i>Description:</I> {{ message[2] }}
+  	  <p>
+  	  <i>City:</I> {{ message[3] }}
+          <hr>
+	{% endfor %}
+
+      </ul>
+    {% else %}
+      <p>No results</p>
+    {% endif %}
 </body>
 {% endblock %}
