@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
+
+{% block content %}
+
+Chats: {{ count }}
+<hr>
+{% for message in messages %}
+<i>Message:</I> {{ message[0] }}
+<p>
+<i>Sender:</I> {{ message[1] }}
+<p>
+<i>Time:</i> {{ message[2].strftime("%Y-%m-%d %H:%M:%S") }}
+<hr>
+{% endfor %}
+<hr>
+<a href="/new_chat">Send chat</a>
+
+{% endblock %}

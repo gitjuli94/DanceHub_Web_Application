@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Welcome to Dance Hub
+{% endblock %}
+
+{% block content %}
+<form action="/send_chat" method="post">
+Chat: <br>
+<textarea name="content" rows="3" cols="40"></textarea>
+<br>
+<input type="submit" value="Send">
+</form>
+{% endblock %}

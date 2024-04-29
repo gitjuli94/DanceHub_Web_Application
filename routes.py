@@ -167,5 +167,32 @@ def delete_review(id):
     db_operations.delete_review(id)
     return redirect("/dance_schools")
 
+@app.route("/forum")
+def forum():
+    """
+    forum main page
+    """
+    if "user_name" in session:
+        list = db_operations.get_chat_list()
+        return render_template("forum.html", count=len(list), messages=list)
+    return render_template("error.html", message="You need to be logged in to view chats")
 
+@app.route("/new_chat")
+def new_chat():
+    """
+    add new chat on forum
+    """
+    return render_template("new_chat.html")
 
+@app.route("/send_chat", methods=["POST"])
+def send_chat():
+    """
+    send new chat on forum
+    """
+    if "user_name" in session:
+        user_id = users.user_id()
+        content = request.form["content"]
+        if db_operations.send_chat(user_id, content):
+            return redirect("/forum")
+        else:
+            return render_template("error.html", message="Sending failed")

@@ -1,14 +1,14 @@
 # DanceHub_Web_Application
 -----
 **final hand in status**
-  
+
 * **missing :**
   * **grouping of schools by style**
   * **forum page**
 -----
 **how to install:**
 1) clone the repository
-    
+
 ```bash
 git clone
 ```
@@ -19,7 +19,7 @@ touch .env
 ```
 3) write these lines in the file:
 ```bash
-DATABASE_URL=postgresql:///(your_database_address)
+DATABASE_URL=postgresql:///(your_database_name)
 
 SECRET_KEY=(create own)
 ```
@@ -30,9 +30,15 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-5) Define the SQL schema:
+5) Connect to your database, if default database not used:
 ```bash
-psql < schema.sql
+psql
+\c (your_database_name)
+```
+
+6) Define the SQL schema:
+```bash
+\i schema.sql
 ```
 6) run the application within a Flask environment
 ```bash

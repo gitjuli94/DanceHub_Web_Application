@@ -35,3 +35,9 @@ CREATE TABLE style_groups (
     style_id INTEGER REFERENCES styles(id),
     CONSTRAINT unique_pair UNIQUE (school_id, style_id)
 );
+CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    content TEXT,
+    user_id INTEGER REFERENCES users(id),
+    sent_at TIMESTAMP
+);
