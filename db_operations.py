@@ -2,9 +2,9 @@ from sqlalchemy.sql import text
 from werkzeug.security import generate_password_hash
 from db import db
 
-def add_school(name, city, description):
-    sql = "INSERT INTO schools (name, city, description, visible) VALUES (:name, :city, :description, :visible)"
-    db.session.execute(text(sql), {"name": name, "city": city, "description": description, "visible": True})
+def add_school(name, city, description, url):
+    sql = "INSERT INTO schools (name, city, description, visible, url) VALUES (:name, :city, :description, :visible, :url)"
+    db.session.execute(text(sql), {"name": name, "city": city, "description": description, "visible": True, "url": url})
     db.session.commit()
     return True
 
@@ -32,16 +32,17 @@ def fetch_school_name(id):
     return name[0] if name else None
 
 def view_school(id):
-    sql = "SELECT name, city, description FROM schools WHERE id=:id"
+    sql = "SELECT name, city, description, url FROM schools WHERE id=:id"
     result = db.session.execute(text(sql), {"id":id})
     school = result.fetchone()
     name = school[0]
     location = school[1]
     description = school[2]
+    url = school[3]
     sql = "SELECT * FROM reviews WHERE school_id=:id"
     result = db.session.execute(text(sql), {"id":id})
     reviews = result.fetchall()
-    return [name, location, description, reviews, id]
+    return [name, location, description, reviews, id, url]
 
 def add_review(id, rating, comment):
     sql = "INSERT INTO reviews (school_id, rating, comment, visible) VALUES (:school_id, :rating, :comment, :visible)"

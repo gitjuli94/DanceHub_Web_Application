@@ -107,8 +107,9 @@ def send():
     name = request.form["name"]
     city = request.form["city"]
     description = request.form["description"]
+    url= request.form["url"]
     #new school
-    if db_operations.add_school(name, city, description):
+    if db_operations.add_school(name, city, description, url):
         return redirect("/dance_schools")
     else:
         return render_template("error.html", message="unsuccessful")
@@ -128,11 +129,12 @@ def school(id):
     location = school[1]
     description = school[2]
     reviews = school[3]
+    url = school[5]
     if session.get("user_role") == 2:
         return render_template("view_school.html", id=id, name=name, location=location, description=description, \
-                           reviews=reviews, add_button=True)
+                           reviews=reviews, add_button=True, url=url)
     return render_template("view_school.html", id=id, name=name, location=location, description=description, \
-                           reviews=reviews, add_button=False)
+                           reviews=reviews, add_button=False, url=url)
 
 @app.route("/<int:id>/add_review")
 def review(id):
@@ -166,32 +168,4 @@ def delete_review(id):
     return redirect("/dance_schools")
 
 
-"""main page for dance schedules, sorted by city"""
-"""
-@app.route("/schedules")
-def schedules():
-    list = db_operations.get_schedules()
-    #is the session logged in with admin rights:
-    if session.get("user_role") == 2:
-        return render_template("dance_schools.html", add_button=True, count=len(list), messages=list)
-    return render_template("dance_schools.html", add_button=False, count=len(list), messages=list)
 
-#add schedules#
-
-@app.route("/add_schedules")
-def add_dance_school():
-    if session.get("user_role") == 2:
-        return render_template("add_dance_school.html")
-    else:
-        return render_template("error.html", message="Not allowed")
-
-@app.route("/send_schedule", methods=["POST"])
-def send():
-    name = request.form["name"]
-    city = request.form["city"]
-    description = request.form["description"]
-    #new schedule
-    if db_operations.add_school(name, city, description):
-        return redirect("/")
-    else:
-        return render_template("error.html", message="unsuccessful")"""
