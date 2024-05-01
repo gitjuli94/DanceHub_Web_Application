@@ -19,6 +19,12 @@ Welcome to Dance Hub
   <input type="text" name="description" required><br>
   <label for="url">Url:</label><br>
   <input type="text" name="url" required><br>
+  <label for="dance_styles">Dance styles:</label><br>
+  <select name="dance_styles" multiple>
+    {% for style in dance_styles %}
+      <option value="{{ style[0] }}">{{ style[1] }}</option>
+    {% endfor %}
+  </select><br>
   <input type="submit" value="Submit">
 </form>
 

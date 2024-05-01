@@ -2,9 +2,16 @@ from sqlalchemy.sql import text
 from werkzeug.security import generate_password_hash
 from db import db
 
-def add_school(name, city, description, url):
-    sql = "INSERT INTO schools (name, city, description, visible, url) VALUES (:name, :city, :description, :visible, :url)"
-    db.session.execute(text(sql), {"name": name, "city": city, "description": description, "visible": True, "url": url})
+def add_school(name, city, description, url, style_ids):
+    sql = "INSERT INTO schools (name, city, description, visible, url) VALUES (:name, :city, :description, :visible, :url)"\
+            "RETURNING id"
+    result = db.session.execute(text(sql), {"name": name, "city": city, "description": description, "visible": True, "url": url})
+    school_id = result.fetchone()[0]
+
+    for style_id in style_ids:
+            sql = "INSERT INTO style_groups (school_id, style_id) VALUES (:school_id, :style_id)"
+            db.session.execute(text(sql), {"school_id": school_id, "style_id": style_id})
+
     db.session.commit()
     return True
 
@@ -44,6 +51,27 @@ def view_school(id):
     reviews = result.fetchall()
     return [name, location, description, reviews, id, url]
 
+def view_style_groups(id):
+        #get groups
+    sql = """
+        SELECT s.name
+        FROM styles s
+        JOIN style_groups sg ON s.id = sg.style_id
+        WHERE sg.school_id = :id
+        """
+    result = db.session.execute(text(sql), {"id":id})
+    styles = result.fetchall()
+    return [style[0] for style in styles]
+
+
+def get_dance_styles():
+    #get style names
+    sql = text("SELECT id, name FROM styles")
+    result = db.session.execute(sql)
+    print(result)
+    return result.fetchall()
+
+
 def add_review(id, rating, comment):
     sql = "INSERT INTO reviews (school_id, rating, comment, visible) VALUES (:school_id, :rating, :comment, :visible)"
     db.session.execute(text(sql), {"school_id":id, "rating": rating, "comment": comment, "visible": True})
@@ -54,15 +82,6 @@ def delete_review(id):
     sql = "UPDATE reviews SET visible=FALSE WHERE reviews.id=:id"
     db.session.execute(text(sql), {"id":id})
     db.session.commit()
-
-"""dance styles, provided automatically in the database?"""
-def add_styles():
-    styles = ['Ballet', 'Hip Hop', 'Jazz', 'Contemporary', 'Tap', 'Ballroom', 'Salsa', 'Bachata', 'Swing', 'Tango', 'Latin']
-    for style in styles:
-        sql = text("INSERT INTO styles (name) VALUES (:style)")
-        db.session.execute(sql, {'style': style})
-    db.session.commit()
-    return True
 
 
 def fetch(query):
@@ -86,3 +105,4 @@ def send_chat(user_id, content):
     db.session.execute(sql, {"content":content, "user_id":user_id})
     db.session.commit()
     return True
+

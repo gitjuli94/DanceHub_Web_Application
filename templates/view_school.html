@@ -11,6 +11,12 @@ Welcome to Dance Hub
     <p><strong>Location:</strong> {{ location }}</p>
     <p><strong>Description:</strong> {{ description }}</p>
     <p><strong>URL:</strong> {{ url }}</p>
+    <p><strong>Dance Styles:</strong></p>
+    <ul class="styles">
+        {% for style in styles %}
+            <li>{{ style }}</li>
+        {% endfor %}
+    </ul>
     <a href="/{{ id }}/add_review">Add Review</a>
 </div>
 <hr>

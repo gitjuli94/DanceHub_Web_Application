@@ -97,8 +97,10 @@ def add_dance_school():
     """
     add dance schools
     """
+    dance_styles = db_operations.get_dance_styles()
+    print("nonii:", dance_styles)
     if session.get("user_role") == 2:
-        return render_template("add_dance_school.html")
+        return render_template("add_dance_school.html", dance_styles=dance_styles)
     else:
         return render_template("error.html", message="Not allowed")
 
@@ -108,8 +110,11 @@ def send():
     city = request.form["city"]
     description = request.form["description"]
     url= request.form["url"]
+    style_names = request.form.getlist("dance_styles")
+    print("täällä", style_names)
+
     #new school
-    if db_operations.add_school(name, city, description, url):
+    if db_operations.add_school(name, city, description, url, style_names):
         return redirect("/dance_schools")
     else:
         return render_template("error.html", message="unsuccessful")
@@ -130,11 +135,12 @@ def school(id):
     description = school[2]
     reviews = school[3]
     url = school[5]
+    styles = db_operations.view_style_groups(id)
     if session.get("user_role") == 2:
         return render_template("view_school.html", id=id, name=name, location=location, description=description, \
-                           reviews=reviews, add_button=True, url=url)
+                           reviews=reviews, add_button=True, url=url, styles=styles)
     return render_template("view_school.html", id=id, name=name, location=location, description=description, \
-                           reviews=reviews, add_button=False, url=url)
+                           reviews=reviews, add_button=False, url=url, styles=styles)
 
 @app.route("/<int:id>/add_review")
 def review(id):

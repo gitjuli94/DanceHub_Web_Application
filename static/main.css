@@ -28,4 +28,34 @@ ul.queries {
     margin: 20px auto;
     padding: 20px;
     max-width: 50%; 
+    text-align: center;
+    list-style-type: none;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    padding-inline-start: 0px;
+    list-style-type: circle;
+}
+
+li {
+    list-style-type: circle;    
+    text-align: center;    
+    margin-bottom: 10px; /* Add margin between list items */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container img {
+    max-width: 100px;
+    height: auto;
+    Margin-right: 20px;
+    Margin-left: 20px;
 }

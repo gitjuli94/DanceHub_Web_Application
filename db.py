@@ -37,7 +37,10 @@ def initialize_database():
     city = "Helsinki"
     description = "A school founded in 2024"
     url = "www.exampleschool.com"
-    sql = "INSERT INTO schools (name, city, description, visible, url) VALUES (:name, :city, :description, :visible, :url)"
+    sql = """
+            INSERT INTO schools (name, city, description, visible, url) VALUES (:name, :city, :description, :visible, :url)
+            ON CONFLICT (url) DO NOTHING
+        """
     db.session.execute(text(sql), {"name": name, "city": city, "description": description, "visible": True, "url": url})
     #commit changes to the database
     db.session.commit()

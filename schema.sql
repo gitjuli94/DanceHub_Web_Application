@@ -15,7 +15,7 @@ CREATE TABLE schools (
     description TEXT,
     admin_id INTEGER REFERENCES users(id),
     visible boolean,
-    url TEXT
+    url TEXT UNIQUE
 );
 
 CREATE TABLE reviews (
