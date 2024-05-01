@@ -40,7 +40,7 @@ psql
 ```bash
 \i schema.sql
 ```
-6) run the application within a Flask environment
+7) run the application within a Flask environment
 ```bash
 flask run
 ```

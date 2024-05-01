@@ -6,7 +6,7 @@ Welcome to Dance Hub
 
 {% block content %}
 
-Chats: {{ count }}
+
 <hr>
 {% for message in messages %}
 <i>Message:</I> {{ message[0] }}
@@ -16,7 +16,6 @@ Chats: {{ count }}
 <i>Time:</i> {{ message[2].strftime("%Y-%m-%d %H:%M:%S") }}
 <hr>
 {% endfor %}
-<hr>
 <a href="/new_chat">Send chat</a>
 
 {% endblock %}
