@@ -6,7 +6,7 @@ CREATE TABLE users (
 );
 CREATE TABLE styles (
     id SERIAL PRIMARY KEY,
-    name TEXT
+    name TEXT UNIQUE
 );
 CREATE TABLE schools (
     id SERIAL PRIMARY KEY,
