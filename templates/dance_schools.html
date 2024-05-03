@@ -9,15 +9,14 @@ Welcome to Dance Hub
 <body>
 
 <h2>Dance Schools</h2>
-
-<form action="/result" method="GET">
-
-  Search: <input type="text" name="query">
+<p>Search with a school name, dance style or city:</p>
+<form action="/result" method="GET" class="search-form">
+  <label for="query">Search:</label>
+  <input type="text" name="query" id="query">
   <input type="submit" value="Go">
-
 </form>
 
-<hr> <!-- add break -->
+<hr> 
 Total number: {{ count }}
 
 {% if add_button %}

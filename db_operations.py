@@ -73,7 +73,7 @@ def get_dance_styles():
 
 
 def add_review(id, rating, comment):
-    sql = "INSERT INTO reviews (school_id, rating, comment, visible) VALUES (:school_id, :rating, :comment, :visible)"
+    sql = "INSERT INTO reviews (school_id, rating, comment, sent_at, visible) VALUES (:school_id, :rating, :comment, NOW(), :visible)"
     db.session.execute(text(sql), {"school_id":id, "rating": rating, "comment": comment, "visible": True})
     db.session.commit()
     return True
@@ -86,11 +86,14 @@ def delete_review(id):
 
 def fetch(query):
     sql = """
-    SELECT id, name, description, city FROM schools
-    WHERE (lower(name) LIKE lower(:query)
-    OR lower(city) LIKE lower(:query)
-    OR lower(description) LIKE lower(:query))
-    AND visible = TRUE;
+    SELECT s.id, s.name, s.description, s.city FROM schools s
+    LEFT JOIN style_groups sg ON s.id = sg.school_id
+    LEFT JOIN styles st ON sg.style_id = st.id
+    WHERE (lower(s.name) LIKE lower(:query)
+    OR lower(s.city) LIKE lower(:query)
+    OR lower(s.description) LIKE lower(:query)
+    OR lower(st.name) LIKE lower(:query))
+    AND s.visible = TRUE;
     """
     result = db.session.execute(text(sql), {"query":"%"+query+"%"})
     return result.fetchall()

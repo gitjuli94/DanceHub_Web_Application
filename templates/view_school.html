@@ -7,17 +7,21 @@ Welcome to Dance Hub
 {% block content %}
 
 <div class="school-details">
-    <h2>{{ name }}</h2>
-    <p><strong>Location:</strong> {{ location }}</p>
-    <p><strong>Description:</strong> {{ description }}</p>
-    <p><strong>URL:</strong> {{ url }}</p>
-    <p><strong>Dance Styles:</strong></p>
-    <ul class="styles">
-        {% for style in styles %}
-            <li>{{ style }}</li>
-        {% endfor %}
-    </ul>
-    <a href="/{{ id }}/add_review">Add Review</a>
+    <div class="school-header">
+        <h2>{{ name }}</h2>
+        <p><strong>Location:</strong> {{ location }}</p>
+        <p><strong>Description:</strong> {{ description }}</p>
+        <p><strong>URL:</strong> {{ url }} </p>
+        <p><strong>Dance Styles:</strong></p>
+        <ul class="styles">
+            {% for style in styles %}
+                <li>{{ style }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="school-action">
+        <a href="/{{ id }}/add_review">Add Review</a>
+    </div>
 </div>
 <hr>
 
@@ -26,19 +30,21 @@ Welcome to Dance Hub
 {% if reviews %}
   {% for review in reviews %}
     {% if review.visible %}
-      <p><strong>Rating:</strong> {{ review.rating }}</p>
-      <p><strong>Comment:</strong> {{ review.comment }}</p>
-        <div class="boolean_buttons">
-          {% if add_button %}
-            <form action="/delete_review/{{ review.id }}" method="POST">
-              <input type="hidden" name="_method" value="POST">
-              <button type="submit">Delete review</button>
-            </form>
-          {% endif %}
-        </div>
-    <hr>
+      <div class="review">
+          <p><strong>Rating:</strong> {{ review.rating }}</p>
+          <p><strong>Comment:</strong> {{ review.comment }}</p>
+	  <p><strong>Sent:</strong> {{ review.sent_at.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+          <div class="boolean_buttons">
+              {% if add_button %}
+                  <form action="/delete_review/{{ review.id }}" method="POST">
+                      <input type="hidden" name="_method" value="POST">
+                      <button type="submit">Delete review</button>
+                  </form>
+              {% endif %}
+          </div>
+      </div>
+      <hr>
     {% endif %}
-    
   {% endfor %}
 {% else %}
   <p>No reviews available for this school yet.</p>
